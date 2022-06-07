@@ -28,7 +28,7 @@ namespace Todolist
                 Console.WriteLine(" (4) Save and Quit program");
 
                 // Accept option and check what to do
-                _ = int.TryParse(Console.ReadLine(), out int option);
+                _ = int.TryParse(Console.ReadLine().Trim(), out int option);
                 switch (option)
                 {
                     case 1:
@@ -42,7 +42,7 @@ namespace Todolist
                         break;
                     case 3:
                         Console.WriteLine("option number 3");
-                        EditTask(allTasks);
+                        (Todo, Done) = EditTask(allTasks, Todo, Done);
                         break;
                     case 4:
                         Console.WriteLine("option number 4");
@@ -64,6 +64,7 @@ namespace Todolist
             bool run = true;
             do
             {
+                Console.Clear();
                 Console.WriteLine("*** Show Task List ***");
                 Console.WriteLine("(1) Sort by Date");
                 Console.WriteLine("(2) Sort by Project");
@@ -71,11 +72,12 @@ namespace Todolist
                 switch (option)
                 {
                     case 1:
+                        Console.Clear();
                         string statusText = null;
-                        Console.WriteLine("------ TodoList by Date -----");
+                        Console.WriteLine("------ TodoList by Start Date -----\n");
                         var sortedDate = allTasks.OrderBy(task => task.StartDate);
-                        Console.WriteLine("sort by date");
-                        Console.WriteLine("-----------------------------");
+                        Console.WriteLine("StartDate".PadRight(12) + "Project".PadRight(20) + "Task".PadRight(20) + "Status");
+                        Console.WriteLine("---------".PadRight(12) + "-------".PadRight(20) + "----".PadRight(20) + "------");
                         foreach (ListofTask task in sortedDate)
                         {
                             if (task.Status)
@@ -84,13 +86,15 @@ namespace Todolist
                                 statusText = " ";
                             Console.WriteLine(Convert.ToString(task.StartDate).PadRight(12) + task.Project.PadRight(20) + task.Task.PadRight(20)+statusText);
                         }
-                        Console.WriteLine("");
+                        Console.WriteLine("Press enter to continue ....");
+                        Console.ReadLine();
                         break;
                     case 2:
-                        Console.WriteLine("------ TodoList by project -----");
+                        Console.Clear();
+                        Console.WriteLine("------ TodoList by project -----\n");
                         var sortedProject = allTasks.OrderBy(task => task.Project);
-                        Console.WriteLine("sort by project");
-                        Console.WriteLine("-----------------------------");
+                        Console.WriteLine("Project".PadRight(20) + "Task".PadRight(20) + "StartDate".PadRight(12) + "Status");
+                        Console.WriteLine("--------".PadRight(20)+"----".PadRight(20)+ "---------".PadRight(12)+"------");
                         foreach (ListofTask task in sortedProject)
                         {
                             if (task.Status)
@@ -99,7 +103,8 @@ namespace Todolist
                                 statusText = " ";
                             Console.WriteLine(task.Project.PadRight(20) + task.Task.PadRight(20) + Convert.ToString(task.StartDate).PadRight(12) + statusText);
                         }
-                        Console.WriteLine("");
+                        Console.WriteLine("Press enter to continue ....");
+                        Console.ReadLine();
                         break;
                     case 0:
                         run = false;
@@ -124,7 +129,7 @@ namespace Todolist
             string startdate = Console.ReadLine();
             Console.WriteLine("Enter end date yyyyMMdd :");
             string enddate = Console.ReadLine();
-            allTasks.Add(new ListofTask(defStatus, newTask, project, DateTime.Today.ToString("yyyyMMdd"), startdate, enddate));
+            allTasks.Add(new ListofTask(defStatus, project, newTask, DateTime.Today.ToString("yyyyMMdd"), startdate, enddate));
             Console.WriteLine("Add one new task ready press any key to continue.....");
             Console.ReadLine();
         }
